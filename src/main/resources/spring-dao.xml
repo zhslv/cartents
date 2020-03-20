@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--开启注解模式-->
+    <context:annotation-config />
+    <!--关联数据库配置文件-->
+    <context:property-placeholder location="classpath:database.properties"/>
+    <!--连接池-->
+    <!-- 使用druid的数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init">
+        <!-- 注入连接属性 -->
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <!-- 设置初始化连接池大小 -->
+        <property name="initialSize" value="5"></property>
+        <!-- 最大连接数 -->
+        <property name="maxActive" value="10"></property>
+        <!-- 设置等待时间 -->
+        <property name="maxWait" value="5000"></property>
+        <!--  -->
+        <property name="filters" value="stat"></property>
+
+    </bean>
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+        <!--<property name="driverClass" value="${jdbc.driver}"/>-->
+        <!--<property name="jdbcUrl" value="${jdbc.url}"/>-->
+        <!--<property name="user" value="${jdbc.username}"/>-->
+        <!--<property name="password" value="${jdbc.password}"/>-->
+        <!--&lt;!&ndash; c3p0连接池的私有属性 &ndash;&gt;-->
+        <!--<property name="maxPoolSize" value="30"/>-->
+        <!--<property name="minPoolSize" value="10"/>-->
+        <!--&lt;!&ndash; 关闭连接后不自动commit &ndash;&gt;-->
+        <!--<property name="autoCommitOnClose" value="false"/>-->
+        <!--&lt;!&ndash; 获取连接超时时间 &ndash;&gt;-->
+        <!--<property name="checkoutTimeout" value="10000"/>-->
+        <!--&lt;!&ndash; 当获取连接失败重试次数 &ndash;&gt;-->
+        <!--<property name="acquireRetryAttempts" value="2"/>-->
+    <!--</bean>-->
+
+    <!--3.sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--绑定mybatis配置-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+    </bean>
+
+    <!--4.配置dao接口的扫描包，动态实现了dao接口可注入到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入sqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--要扫描的dao包-->
+        <property name="basePackage" value="com.zhs.dao"/>
+    </bean>
+</beans>
