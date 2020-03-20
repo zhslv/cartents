@@ -3,14 +3,13 @@ package com.zhs.service;
 import com.zhs.bean.UserBean;
 import com.zhs.dao.UserBeanDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
+@Service
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserBeanDao userBeanDao;
-    public void setUserBeanDao(UserBeanDao userBeanDao) {
-        this.userBeanDao=userBeanDao;
-    }
+
     public int deleteByPrimaryKey(Integer userid) {
         return userBeanDao.deleteByPrimaryKey(userid);
     }

@@ -14,37 +14,43 @@
 
     <!--1.扫描service下的包-->
     <context:component-scan base-package="com.zhs.service"/>
-    <!--2.将所有的业务类注入到spring中，可以通过注解或者配置实现-->
-    <bean id="UserServiceImpl" class="com.zhs.service.UserServiceImpl">
-        <property name="userBeanDao" ref="userBeanDao"/>
-    </bean>
-    <bean id="MenuServiceImpl" class="com.zhs.service.MenuServiceImpl">
-        <property name="menuBeanDao" ref="menuBeanDao"/>
-    </bean>
+    <!--&lt;!&ndash;2.将所有的业务类注入到spring中，可以通过注解或者配置实现&ndash;&gt;-->
+    <!--<bean id="UserServiceImpl" class="com.zhs.service.UserServiceImpl">-->
+        <!--<property name="userBeanDao" ref="userBeanDao"/>-->
+    <!--</bean>-->
+    <!--<bean id="MenuServiceImpl" class="com.zhs.service.MenuServiceImpl">-->
+        <!--<property name="menuBeanDao" ref="menuBeanDao"/>-->
+    <!--</bean>-->
     <!--声明事务配置-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <!--注入数据源-->
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <!--开启注解模式-->
-    <!-- 通知 -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <!-- 2,声明事务的传播特性 也就是通知 -->
+    <tx:advice id="advise" transaction-manager="transactionManager">
         <tx:attributes>
-            <!-- 传播行为 -->
-            <tx:method name="save*" propagation="REQUIRED" />
-            <tx:method name="insert*" propagation="REQUIRED" />
-            <tx:method name="add*" propagation="REQUIRED" />
-            <tx:method name="create*" propagation="REQUIRED" />
-            <tx:method name="delete*" propagation="REQUIRED" />
-            <tx:method name="update*" propagation="REQUIRED" />
-            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
-            <tx:method name="select*" propagation="SUPPORTS" read-only="true" />
-            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+            <!-- 以add开头的方法名需要事务 -->
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="change*" propagation="REQUIRED"/>
+            <tx:method name="reset*" propagation="REQUIRED"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="load*" read-only="true"/>
+            <tx:method name="*" read-only="true"/>
         </tx:attributes>
     </tx:advice>
-    <!-- 切面 -->
-    <aop:config>
-        <aop:advisor advice-ref="txAdvice"
-                     pointcut="execution(* com.zhs.service.*.*(..))" />
+    <!-- 3进行AOP织入 -->
+    <aop:config  proxy-target-class="true" >
+        <!-- 声明切面 -->
+        <aop:pointcut expression="execution(* com.zhs.service.*.*(..))" id="pc1"/>
+        <!--<aop:pointcut expression="execution(* com.zhs.bus.service.impl.*.*(..))" id="pc2"/>-->
+        <!--<aop:pointcut expression="execution(* com.zhs.stat.service.impl.*.*(..))" id="pc3"/>-->
+        <!-- 织入 -->
+        <aop:advisor advice-ref="advise" pointcut-ref="pc1"/>
+        <!--<aop:advisor advice-ref="advise" pointcut-ref="pc2"/>-->
+        <!--<aop:advisor advice-ref="advise" pointcut-ref="pc3"/>-->
     </aop:config>
 </beans>

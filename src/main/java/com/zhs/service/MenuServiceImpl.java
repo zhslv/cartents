@@ -7,16 +7,15 @@ import com.zhs.dao.MenuBeanDao;
 import com.zhs.utils.DataGridView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuBeanDao menuBeanDao;
 
-    public void setMenuBeanDao(MenuBeanDao menuBeanDao) {
-        this.menuBeanDao = menuBeanDao;
-    }
+
 
     public int deleteByPrimaryKey(Integer id) {
         return 0;

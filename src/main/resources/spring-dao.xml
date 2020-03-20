@@ -29,28 +29,19 @@ https://www.springframework.org/schema/context/spring-context.xsd">
         <property name="filters" value="stat"></property>
 
     </bean>
-    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
-        <!--<property name="driverClass" value="${jdbc.driver}"/>-->
-        <!--<property name="jdbcUrl" value="${jdbc.url}"/>-->
-        <!--<property name="user" value="${jdbc.username}"/>-->
-        <!--<property name="password" value="${jdbc.password}"/>-->
-        <!--&lt;!&ndash; c3p0连接池的私有属性 &ndash;&gt;-->
-        <!--<property name="maxPoolSize" value="30"/>-->
-        <!--<property name="minPoolSize" value="10"/>-->
-        <!--&lt;!&ndash; 关闭连接后不自动commit &ndash;&gt;-->
-        <!--<property name="autoCommitOnClose" value="false"/>-->
-        <!--&lt;!&ndash; 获取连接超时时间 &ndash;&gt;-->
-        <!--<property name="checkoutTimeout" value="10000"/>-->
-        <!--&lt;!&ndash; 当获取连接失败重试次数 &ndash;&gt;-->
-        <!--<property name="acquireRetryAttempts" value="2"/>-->
-    <!--</bean>-->
-
     <!--3.sqlSessionFactory-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--数据库连接池-->
         <property name="dataSource" ref="dataSource"/>
         <!--绑定mybatis配置-->
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--注入mapper.xml-->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:mapper/*/*BeanDao.xml</value>
+                <!--<value>classpath:mapper/*/*Mapper.xml</value>-->
+            </array>
+        </property>
     </bean>
 
     <!--4.配置dao接口的扫描包，动态实现了dao接口可注入到spring容器中-->

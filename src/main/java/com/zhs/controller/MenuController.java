@@ -15,7 +15,6 @@ import java.util.List;
 @Controller
 public class MenuController {
     @Autowired
-    @Qualifier("MenuServiceImpl")
     private MenuService menuService;
 
     @RequestMapping("/menu/loadIndexLeftMenuJson")
