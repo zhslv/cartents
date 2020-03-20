@@ -32,6 +32,10 @@ public class UserController {
             return "system/main/login";
         }
     }
-
+    //跳转工作台页面
+    @RequestMapping("desk/todeskManager")
+    public String desk(){
+        return "system/main/deskManager";
+    }
 
 }
