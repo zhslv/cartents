@@ -64,7 +64,7 @@
 			<div class="navBar layui-side-scroll" id="navBar">
 				<ul class="layui-nav layui-nav-tree">
 					<li class="layui-nav-item layui-this">
-						<a href="javascript:;" data-url="${pageContext.request.contextPath }/desk/todeskManager"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a>
+						<a href="javascript:;" data-url="${pageContext.request.contextPath }/desk/todeskManager.action"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a>
 					</li>
 				</ul>
 			</div>
@@ -87,7 +87,7 @@
 				</ul>
 				<div class="layui-tab-content clildFrame">
 					<div class="layui-tab-item layui-show">
-						<iframe src="${pageContext.request.contextPath }/desk/todeskManager"></iframe>
+						<iframe src="${pageContext.request.contextPath }/desk/todeskManager.action"></iframe>
 					</div>
 				</div>
 			</div>
@@ -118,7 +118,7 @@
 	    	layer = parent.layer === undefined ? layui.layer : top.layer;
 			tab = layui.bodyTab({
 				openTabNum : "50",  //最大可打开窗口数量
-				url : "${pageContext.request.contextPath }/static/json/navs.json" //获取菜单json地址
+				url : "${pageContext.request.contextPath }/menu/loadIndexLeftMenuJson.action" //获取菜单json地址
 			});
 
 		//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据

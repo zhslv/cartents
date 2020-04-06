@@ -4,29 +4,38 @@ import com.zhs.bean.MenuBean;
 import com.zhs.bean.UserBean;
 import com.zhs.service.MenuService;
 import com.zhs.utils.*;
+import com.zhs.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("menu")
 public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping("/menu/loadIndexLeftMenuJson")
-    public List<TreeNode> loadIndexLeftMenuJson(MenuBean menuBean){
+    /**
+     * 登录时初始化菜单
+     * @param menuVo
+     * @return
+     */
+    @RequestMapping("loadIndexLeftMenuJson")
+    public List<TreeNode> loadIndexLeftMenuJson(MenuVo menuVo){
         //得到当前登陆的用户对象
         UserBean user=(UserBean) WebUtils.getHttpSession().getAttribute("user");
         List<MenuBean> list=null;
-        menuBean.setAvailable(SysConstast.AVAILABLE_TRUE);//只查询可用的
+        menuVo.setAvailable(SysConstast.AVAILABLE_TRUE);//只查询可用的
         if(user.getType()==SysConstast.USER_TYPE_SUPER) {
-            list=this.menuService.queryAllMenuForList(menuBean);
+            list=this.menuService.queryAllMenuForList(menuVo);
         }else {
-            list=this.menuService.queryMenuByUserIdForList(menuBean, user.getUserid());
+            list=this.menuService.queryMenuByUserIdForList(menuVo, user.getUserid());
         }
         List<TreeNode> nodes= new ArrayList<>();
         //把list里面的数据放到nodes
@@ -47,10 +56,10 @@ public class MenuController {
     /**
      * 加载菜单管理左边的菜单树
      */
-    @RequestMapping("/menu/loadMenuManagerLeftTreeJson")
-    public DataGridView loadMenuManagerLeftTreeJson(MenuBean menuBean){
-        menuBean.setAvailable(SysConstast.AVAILABLE_TRUE);//只查询可用的
-        List<MenuBean> list=this.menuService.queryAllMenuForList(menuBean);
+    @RequestMapping("loadMenuManagerLeftTreeJson")
+    public DataGridView loadMenuManagerLeftTreeJson(MenuVo menuVo){
+        menuVo.setAvailable(SysConstast.AVAILABLE_TRUE);//只查询可用的
+        List<MenuBean> list=this.menuService.queryAllMenuForList(menuVo);
         List<TreeNode> nodes= new ArrayList<>();
         //把list里面的数据放到nodes
         for (MenuBean menu : list) {
@@ -69,8 +78,8 @@ public class MenuController {
     /**
      * 加载菜单列表返回DataGridView
      */
-    @RequestMapping("/menu/loadAllMenu")
-    public DataGridView loadAllMenu(MenuBean menuBean) {
-        return this.menuService.queryAllMenu(menuBean);
+    @RequestMapping("loadAllMenu")
+    public DataGridView loadAllMenu(MenuVo menuVo) {
+        return this.menuService.queryAllMenu(menuVo);
     }
 }

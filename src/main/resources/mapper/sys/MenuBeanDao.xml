@@ -119,6 +119,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.zhs.bean.MenuBean" >
     update sys_menu
     set pid = #{pid,jdbcType=INTEGER},
@@ -134,6 +135,14 @@
 <!--查询所有菜单-->
   <select id="queryAllMenu" resultMap="BaseResultMap">
     select  * from sys_menu
+    <where>
+      <if test="title!=null and title!=''">
+          and title like concat("%",#{title},"%")
+      </if>
+      <if test="available!=null">
+          and available=#{available}
+      </if>
+    </where>
   </select>
 
 </mapper>

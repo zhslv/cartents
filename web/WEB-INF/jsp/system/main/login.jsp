@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="/static/css/public.css" media="all" />
 </head>
 <body class="loginBody">
-<form class="layui-form" id="loginFrm" method="post" action="/login">
+<form class="layui-form" id="loginFrm" method="post" action="/login.action">
 	<div class="login_face"><img src="/static/images/face.jpg" class="userAvatar"></div>
 	<div class="layui-form-item input-item">
 		<label for="userName">用户名</label>

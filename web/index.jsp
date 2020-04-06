@@ -4,6 +4,6 @@
     <title>登录</title>
   </head>
   <body>
-<jsp:forward page="/tologin"></jsp:forward>
+<jsp:forward page="/tologin.action"></jsp:forward>
   </body>
 </html>
